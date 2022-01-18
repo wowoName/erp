@@ -18,32 +18,33 @@
   <el-table :data="tableData" v-loading="loadTable" row-key="id" border default-expand-all>
     <el-table-column prop="name" label="批次名称" />
     <el-table-column prop="categoryName" label="所属产品" />
-    <!-- <el-table-column prop="cost" label="成本" width="150">
+
+    <el-table-column prop="cost" label="成本" width="150">
       <template #default="scope">
         <span>{{scope.row.cost}} / {{scope.row.unitName}}</span>
       </template>
     </el-table-column>
-    <el-table-column prop="selling" label="售价" width="150">
+    <!--  <el-table-column prop="selling" label="售价" width="150">
       <template #default="scope">
         <span>{{scope.row.selling}} / {{scope.row.unitName}}</span>
       </template>
     </el-table-column> -->
-    <el-table-column label="操作" width="200">
+    <!-- <el-table-column label="操作" width="200">
       <template #default="scope">
         <el-button size="mini" icon="Edit" @click.prevent="handlerEdit(scope.row)">
           修改
         </el-button>
-        <!-- <el-popconfirm title="确定要删除吗?" @confirm="handlerDelete(scope.row)" confirm-button-text="确定"
+        <el-popconfirm title="确定要删除吗?" @confirm="handlerDelete(scope.row)" confirm-button-text="确定"
           cancel-button-text="取消">
           <template #reference>
             <el-button size="small" type="danger" icon="Delete">
               删除
             </el-button>
           </template>
-        </el-popconfirm> -->
+        </el-popconfirm>
 
       </template>
-    </el-table-column>
+    </el-table-column> -->
   </el-table>
   <el-pagination v-model:currentPage="currentPage" :page-sizes="[10, 20, 30, 50]" :page-size="pageSize"
     layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange"
