@@ -5,7 +5,7 @@ node_modules
 /src/views/outboundManage.vue
 /src/views/purchaseManage.vue
 /src/views/salesManage.vue
-
+/src/views/fileUpload.vue
 # local env files
 .env.local
 .env.*.local
