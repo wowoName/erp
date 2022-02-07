@@ -39,18 +39,18 @@
   <el-table :data="tableData" v-loading="loadingTbl" show-summary style="width: 100%" border empty-text="暂无数据">
     <el-table-column prop="repoName" label="仓库名称" />
     <el-table-column prop="categoryName" label="商品名称" />
-    <el-table-column prop="stock" label="批次名称">
+    <el-table-column prop="stock" label="批次名称" v-if="formInline.groupByCategory === '1'">
       <template #default="scope">
         {{scope.row.specieInfos?.batchName}}
       </template>
     </el-table-column>
-    <el-table-column prop="stock" label="库存">
+    <el-table-column prop="stock" label="库存" sortable>
       <template #default="scope">
         {{scope.row.stock}} / {{scope.row.unitName}}
       </template>
     </el-table-column>
 
-    <el-table-column prop="stock" label="进价">
+    <el-table-column prop="stock" label="进价" v-if="formInline.groupByCategory === '1'">
       <template #default="scope">
         {{scope.row.specieInfos?.cost}} / {{scope.row.specieInfos?.unitName}}
       </template>
@@ -58,14 +58,14 @@
   </el-table>
 
   <el-pagination v-model:currentPage="currentPage" :page-sizes="[10, 20, 30, 50]" :page-size="pageSize"
-    layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange"
-    @current-change="handleCurrentChange">
+    layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="v=>handleSizeChange(v)"
+    @current-change="v=>handleCurrentChange(v)">
   </el-pagination>
 
 </template>
 
   <script>
-import { reactive, toRefs, onMounted } from 'vue';
+import { reactive, toRefs, onMounted, nextTick } from 'vue';
 import { getInventoryList, getCategoryTree, getRepoList, getListByCategoryId } from '@/api/common'
 export default {
   name: 'inventory',
@@ -102,7 +102,10 @@ export default {
        * 查询
        */
       async onQuery() {
-        const params = Object.assign({}, state.formInline)
+        const params = Object.assign({
+          pageSize: state.pageSize,
+          pageNo: state.currentPage
+        }, state.formInline)
         state.loadingTbl = true
         //产品id
         params.categoryId = params.categoryId.join(",")
@@ -117,7 +120,10 @@ export default {
         // 是否按照商品进行产线
         params.groupByCategory = params.groupByCategory === '0'
 
-        const responseData = await getInventoryList(params)
+
+        const responseData = await getInventoryList(params).finally(() => {
+          state.loadingTbl = false
+        })
         if (responseData.code === 200) {
           let tblData = responseData.message.records;
           state.total = responseData.message.total;
@@ -125,20 +131,17 @@ export default {
            * 按照商品类型统计
            * 批次名称不显示
            */
-          if (state.formInline.groupByCategory === '0') {
-            tblData.forEach(v => {
-              v.specieInfos.batchName = ''
-              v.specieInfos.cost = ''
-              v.specieInfos.costUnitName = ''
+          // if (state.formInline.groupByCategory === '0') {
+          //   tblData.forEach(v => {
+          //     v.specieInfos.batchName = ''
+          //     v.specieInfos.cost = ''
+          //     v.specieInfos.costUnitName = ''
 
-            })
-          }
+          //   })
+          // }
           state.tableData = tblData
         }
 
-
-
-        state.loadingTbl = false
       },
       /**
        * 根据选择的商品获取产品批次数
@@ -164,14 +167,14 @@ export default {
       */
       handleSizeChange(value) {
         state.pageSize = value
-        methods.onQuery()
+        this.onQuery()
       },
       /**
        * 分页页数改变
        */
       handleCurrentChange(value) {
         state.currentPage = value
-        methods.onQuery()
+        this.onQuery()
       }
     }
     //查询产品树、用户列表、供应商

@@ -1,7 +1,10 @@
 .DS_Store
 node_modules
 /dist
-
+/src/views/grnManage.vue
+/src/views/outboundManage.vue
+/src/views/purchaseManage.vue
+/src/views/salesManage.vue
 
 # local env files
 .env.local

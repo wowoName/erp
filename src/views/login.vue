@@ -25,6 +25,9 @@
         <div class="login-btn">
           <el-button type="primary" :loading="loginLoadign" @click="submitForm()">登录</el-button>
         </div>
+        <el-form-item>
+          <span style="color:#ffffff;font-size:20px">请使用最新google浏览器体验!!!</span>
+        </el-form-item>
       </el-form>
     </div>
   </div>

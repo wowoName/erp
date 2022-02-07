@@ -34,7 +34,7 @@
     <el-table-column prop="categoryName" label="商品名称" />
     <el-table-column prop="amounts" label="数量">
       <template #default="scope">
-        {{scope.row.amounts}}{{scope.row.unitName}}
+        {{scope.row.amounts}} / {{scope.row.unitName}}
       </template>
     </el-table-column>
   </el-table>

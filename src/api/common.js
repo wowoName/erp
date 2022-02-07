@@ -135,7 +135,7 @@ export const addGrnList = (data = {}) => {
 }
 //更新
 export const updateGrnList = (data = {}) => {
-    return httpFetch.post('grn/update', data)
+    return httpFetch.post('grn/updateGrn', data)
 }
 // 删除 入库单
 export const deleteGrnList = (data = {}) => {
@@ -251,7 +251,73 @@ export const getCustomerRaking = (data = {}) => {
 }
 
 
+/** 新增采购单*/
+export const addPurchase = (data = {}) => {
+    return httpFetch.post('purchase/add', data)
+}
 
+/** 更新采购单*/
+export const updatePurchase = (data = {}) => {
+    return httpFetch.post('purchase/update', data)
+}
+/** 审核采购单*/
+export const auditPurchase = (data = {}) => {
+    return httpFetch.post('purchase/audit', data)
+}
+
+/** 删除采购单*/
+export const deletePurchase = (data = {}) => {
+    return httpFetch.post('purchase/delete', data)
+}
+
+
+/** 采购单列表*/
+export const getPurchaseList = (data = {}) => {
+    return httpFetch.post('purchase/list', data)
+}
+
+/** 根据id获取采购单*/
+export const getPurchaseById = (data = {}) => {
+    return httpFetch.post('purchase/getOne', data)
+}
+
+
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~出库通知单~~~~~~~~~~~~~~~~~~~~~
+/** 新增出库通知单*/
+export const addDeliveryNotice = (data = {}) => {
+    return httpFetch.post('deliveryNotice/add', data)
+}
+
+/** 更新入库通知单*/
+export const updateDeliveryNotice = (data = {}) => {
+    return httpFetch.post('deliveryNotice/update', data)
+}
+/** 审核入库通知单*/
+export const auditDeliveryNotice = (data = {}) => {
+    return httpFetch.post('deliveryNotice/audit', data)
+}
+
+/** 删除入库通知单*/
+export const deleteDeliveryNotice = (data = {}) => {
+    return httpFetch.post('deliveryNotice/delete', data)
+}
+
+
+/** 入库通知单列表*/
+export const getDeliveryNoticeList = (data = {}) => {
+    return httpFetch.post('deliveryNotice/list', data)
+}
+
+/** 上传文件*/
+export const uploadFile = (data = {}) => {
+    return httpFetch.post('grn/uploadFile', data, {
+        header: {
+            'Content-Type': 'multipart/form-data'
+        }
+    })
+}
 
 
 

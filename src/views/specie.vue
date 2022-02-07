@@ -19,9 +19,20 @@
     <el-table-column prop="name" label="批次名称" />
     <el-table-column prop="categoryName" label="所属产品" />
 
-    <el-table-column prop="cost" label="成本" width="150">
+    <el-table-column prop="cost" label="成本">
       <template #default="scope">
         <span>{{scope.row.cost}} / {{scope.row.unitName}}</span>
+      </template>
+    </el-table-column>
+
+    <el-table-column prop="cost" label="仓库">
+      <template #default="scope">
+        <span>{{scope.row.inventory.repoName}}</span>
+      </template>
+    </el-table-column>
+    <el-table-column prop="cost" label="库存">
+      <template #default="scope">
+        <span>{{scope.row.inventory.stock}} / {{scope.row.inventory.unitName}}</span>
       </template>
     </el-table-column>
     <!--  <el-table-column prop="selling" label="售价" width="150">

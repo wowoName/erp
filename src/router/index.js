@@ -120,9 +120,50 @@ const routes = [
         title: '库存盘点',
       },
       component: () => import(/* webpackChunkName: "inventory" */ '../views/inventory.vue')
-    }]
-  },
+    },
+    {
+      path: '/purchaseManage',
+      name: 'purchaseManage',
+      meta: {
+        title: '采购申请',
+      },
+      component: () => import(/* webpackChunkName: "purchaseManage" */ '../views/purchaseManage.vue')
+    },
+    {
+      path: '/salesManage',
+      name: 'salesManage',
+      meta: {
+        title: '出库通知单',
+      },
+      component: () => import(/* webpackChunkName: "purchaseManage" */ '../views/salesManage.vue')
+    },
 
+    {
+      path: '/build',
+      name: 'build',
+      meta: {
+        title: '开发中',
+      },
+      component: () => import(/* webpackChunkName: "build" */ '../views/build.vue')
+    },
+    ]
+  },
+  {
+    path: '/fileUpload',
+    name: 'fileUpload',
+    meta: {
+      title: '开发中',
+    },
+    component: () => import(/* webpackChunkName: "build" */ '../views/fileUpload.vue')
+  },
+  {
+    path: '/print-purchase',
+    name: 'print-purchase',
+    meta: {
+      title: '打印出库单',
+    },
+    component: () => import(/* webpackChunkName: "print-purchase" */ '../views/printPurchase.vue')
+  },
   {
     path: '/login',
     name: 'login',

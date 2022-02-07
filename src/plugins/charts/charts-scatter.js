@@ -136,7 +136,7 @@ export default class ChartsLine {
             grid: {
                 top: 80,
                 left: 0,
-                right: 0,
+                right: 40,
                 bottom: 80,
                 containLabel: true
             },

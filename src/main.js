@@ -10,6 +10,8 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import locale from 'element-plus/es/locale/lang/zh-cn'
 import '@/style/element.theme.scss'
+import '@/style/system.scss'
+
 
 //注册全局图标
 import * as ElIcons from '@element-plus/icons'

@@ -221,7 +221,7 @@
               <el-form-item label-width="0" :prop="'children.'+props.$index+'.categoryId'"
                 :rules="dialogFormRules.categoryId">
                 <el-cascader v-model="props.row.categoryId" filterable @change="v=>getGrnDetailSpecie(v,props.$index)"
-                  size="mini" :options="categoryData" placeholder="请选择入库产品" :props="{ value: 'id', label: 'name' }"
+                  size="mini" :options="categoryData" placeholder="请选择出库产品" :props="{ value: 'id', label: 'name' }"
                   collapse-tags clearable style="width:100%" />
               </el-form-item>
             </template>
@@ -267,7 +267,7 @@
             <template #default="props">
               <el-form-item label-width="0" :prop="'children.'+props.$index+'.amount'" :rules="dialogFormRules.amount">
                 <el-input-number v-model.number="props.row.amount" @change="getTotalPrice(props.$index)" :min="0"
-                  style="width:100%" clearable placeholder="请输入入库数量">
+                  style="width:100%" clearable placeholder="请输入出库数量">
                 </el-input-number>
               </el-form-item>
             </template>
@@ -320,7 +320,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="操作" width="120" fixed="right">
+          <el-table-column label="操作" width="120" fixed="right" v-if="!isEdit">
             <template #default="props">
               <el-form-item label-width="0" v-if="props.$index!==0">
                 <el-button size="mini" type="danger" icon="Delete" @click="removeGrnDetail(props.$index)">删除</el-button>
@@ -330,7 +330,7 @@
 
         </el-table>
       </el-form-item>
-      <el-form-item label-width='0'>
+      <el-form-item label-width='0' v-if="!isEdit">
         <el-button type="text" size="medium" icon="CirclePlus" @click="addGrnDetailList()">添加出库产品</el-button>
       </el-form-item>
       <el-divider border-style="dashed"></el-divider>
@@ -529,8 +529,8 @@ export default {
     }
     // 新增、修改form
     let dialogForm = reactive({
-      code: '' + moment(new Date()).format('YYYYMMDDHHmmss'),//入库单编号
-      date: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),//入库日期
+      code: '' + moment(new Date()).format('YYYYMMDDHHmmss'),//出库单编号
+      date: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),//出库日期
       agentId: '',// 操作人id
       customerId: '',//  客户
       totalPrice: 0,// 总价
@@ -548,10 +548,10 @@ export default {
     // 新增、修改formRules
     const dialogFormRules = {
       code: [{
-        required: true, message: '请输入入库单编号', trigger: 'blur',
+        required: true, message: '请输入出库单编号', trigger: 'blur',
       }],
       date: [{
-        required: true, message: '请选择入库日期', trigger: 'change',
+        required: true, message: '请选择出库日期', trigger: 'change',
       }],
       agentId: [{
         required: true, message: '请选择操作人', trigger: 'change',
@@ -560,14 +560,14 @@ export default {
         required: true, message: '请选择客户', trigger: 'change',
       }],
       categoryId: [{
-        required: true, message: '请选择入库产品', trigger: 'blur',
+        required: true, message: '请选择出库产品', trigger: 'blur',
       }],
       amount: [{
-        required: true, message: '请输入入库数量', trigger: 'blur',
+        required: true, message: '请输入出库数量', trigger: 'blur',
       }, {
         type: 'number',
         min: 1,
-        message: '入库数量最小为1',
+        message: '出库数量最小为1',
         trigger: 'blur',
       }],
       unitId: [{
@@ -580,7 +580,7 @@ export default {
         required: true, message: '请选择批次', trigger: 'blur',
       }],
       categoryId: [{
-        required: true, message: '请选择入库产品', trigger: 'blur',
+        required: true, message: '请选择出库产品', trigger: 'blur',
       }],
       price: [{
         required: true, message: '请输入单价', trigger: 'blur',
@@ -594,7 +594,7 @@ export default {
     // 新增、修改dialog ref
     const dialogRef = ref(null)
     /**
-  * 入库产品 计算利润  切换展示 产品id 、 单位id
+  * 出库产品 计算利润  切换展示 产品id 、 单位id
   */
     function setGrnDetailTotalPrice(changeId = true) {
       return new Promise((resolve, reject) => {
@@ -634,7 +634,7 @@ export default {
 
           //单位最后一位
           item.unitId = unit1Id//Array.isArray(item.unitId) ? item.unitId.at(-1) : item.unitId;
-          // 入库产品id 
+          // 出库产品id 
           item.categoryId = Array.isArray(item.categoryId) ? item.categoryId.at(-1) : item.categoryId;
           // 均摊其他费用
           item.fees = fees
@@ -745,7 +745,6 @@ export default {
       getCategoryStock(index) {
         dialogForm.children[index].stock = ''
         dialogForm.children[index].grnPrice = ''
-        debugger
         const getOutboundChildren = dialogForm.children[index]
         let categoryId = getOutboundChildren.categoryId,
           repoId = getOutboundChildren.repoId,
@@ -814,21 +813,24 @@ export default {
         dialogForm.distributionName = ''//配送联系人
       },
       /**
-       * 移除入库明细
+       * 移除出库明细
        */
       removeGrnDetail(index) {
         dialogForm.children.splice(index, 1)
       },
       /**
-       * 入库产品明细 入库产品change事件
+       * 出库产品明细 出库产品change事件
        * 获取产品批次数
        */
-      async getGrnDetailSpecie(value, index) {
+      async getGrnDetailSpecie(value, index, isClear = true) {
+        console.log('改了吧')
         //之前选择批次清除【非编辑状态】
-        if (!state.isEdit) {
+        // if (!state.isEdit) {
+        if (isClear) {
           dialogForm.children[index].specieId = '';
           dialogForm.children[index].specieData = []
-          dialogForm.children[index].grnPrice = ''
+          dialogForm.children[index].grnPrice = '--'
+          dialogForm.children[index].stock = '--'// 库存
         }
         if (value == null) return;
         const categoryId = Array.isArray(value) ? value.at(-1) : value;
@@ -838,7 +840,11 @@ export default {
         })
         res.code === 200 && (dialogForm.children[index].specieData = res.message)
         // 非编辑状态
-        if (!state.isEdit) {
+        if (isClear) {
+          // 批次清空
+          dialogForm.children[index].specieId = '';
+          // 进价清空
+          dialogForm.children[index].grnPrice = ''
           //默认选中第一个
           res.code === 200 && res.message.length > 0 && (dialogForm.children[index].specieId = res.message[0].id) && (dialogForm.children[index].cost = res.message[0].cost + "" + res.message[0].unitName)
           // 显示产品进价
@@ -851,7 +857,7 @@ export default {
 
       },
       /**
-       * 新增入库产品明细
+       * 新增出库产品明细
        * 添加一个子级明细
        */
       addGrnDetailList() {
@@ -890,7 +896,7 @@ export default {
         nextTick(() => {
           dialogRef.value.resetFields()
           for (const key in dialogForm) {
-            // 入库产品明细
+            // 出库产品明细
             if (key === 'children') {
               let index = 0;
               for (const itemc of item.children) {
@@ -900,7 +906,7 @@ export default {
                   Reflect.has(dialogForm.children[index], iterator) && (dialogForm.children[index][iterator] = itemc[iterator])
                 }
                 // 加载批次
-                this.getGrnDetailSpecie(dialogForm.children[index].categoryId, index)
+                this.getGrnDetailSpecie(dialogForm.children[index].categoryId, index, false)
                 // 加载库存
                 index++
               }

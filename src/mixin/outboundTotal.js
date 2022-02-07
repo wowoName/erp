@@ -25,7 +25,7 @@ export default () => {
         number: 0,
         unit: '元'
     }, {
-        key: 'allDebt1',
+        key: 'allDebt',
         icon: 'money',
         color: '#f4516c',
         title: '待收欠款总金额',

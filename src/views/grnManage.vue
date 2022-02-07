@@ -113,11 +113,11 @@
         <el-button size="mini" icon="Edit" @click.prevent="handlerEdit(scope.row)">
           修改
         </el-button>
-        <el-popconfirm title="确定要删除吗?" @confirm="handlerDelete(scope.row)" confirm-button-text="确定"
+        <el-popconfirm title="退货！入库存产品将被清空，是否进行操作?" @confirm="handlerDelete(scope.row)" confirm-button-text="确定"
           cancel-button-text="取消">
           <template #reference>
             <el-button size="mini" type="danger" icon="Delete">
-              删除
+              退货
             </el-button>
           </template>
         </el-popconfirm>
@@ -177,7 +177,14 @@
 
       </el-row>
       <el-form-item label-width='0'>
-        <el-divider> <span class="grn-detail-title">入库产品明细</span> </el-divider>
+        <el-divider>
+          <div class="grn-detail-divider">
+            <span class="grn-detail-title">入库产品明细</span>
+            <el-button size="mini" type="primary" icon="Position" @click.prevent="showPurchaseModal()">
+              从采购单导入
+            </el-button>
+          </div>
+        </el-divider>
       </el-form-item>
       <el-form-item label-width='0'>
         <el-table :data="dialogForm.children">
@@ -194,7 +201,7 @@
 
           <el-table-column label="产品批次" min-width="220px">
             <template #default="props">
-              <el-form-item label-width="0" :prop="'children.'+props.$index+'.specieId'"
+              <el-form-item label-width="0" :prop="'children.'+props.$index+'.specieName'"
                 :rules="dialogFormRules.specieName">
                 <!-- <el-select v-model="props.row.specieId" filterable :loading="props.row.specieData.length===0"
                   style="width:100%" :disabled="props.row.specieData.length===0" clearable placeholder="请选择产品批次">
@@ -316,6 +323,9 @@
     </template>
   </el-dialog>
 
+  <el-dialog v-model="purchaseVisible" fullscreen title="导入采购单至入库明细（双击表格行即可）">
+    <Purchase @selectedPurchase="selectedPurchase" />
+  </el-dialog>
 </template>
 
   <script>
@@ -331,12 +341,16 @@ import mathJs from '@/utils/math'
 //远程搜索供应商，客户
 import remoteMix from '@/mixin/remote'
 import _ from 'lodash'
-
+// 采购单
+import Purchase from '@/components/purchase/index.vue'
 export default {
   name: 'grnManage',
+  components: {
+    Purchase
+  },
   setup(props, context) {
-
     const state = reactive({
+      purchaseVisible: false,// 采购单dialog
       tableData: [],
       dialogVisible: false,// 修改、新增产品dialog
       isEdit: false,
@@ -438,6 +452,9 @@ export default {
       categoryId: [{
         required: true, message: '请选择入库产品', trigger: 'blur',
       }],
+      specieName: [{
+        required: true, message: '请输入批次名称', trigger: 'blur',
+      }],
       totalPriceC: [{
         required: true, message: '请输入入库成本', trigger: 'blur',
       }, {
@@ -451,8 +468,36 @@ export default {
     const dialogRef = ref(null)
     const methods = {
       /**
-   * 显示入库明细
-   */
+       * 选择的采购单
+       */
+      async selectedPurchase(purchaseData) {
+        state.purchaseVisible = false
+        showMessage('success', '导入成功')
+        // 将采购的产品合并到明细
+        dialogForm.children = []
+        let index = 0;
+        for (const item of purchaseData.children) {
+          dialogForm.children.push({
+            categoryId: item.categoryId,
+            repoId: item.repoId,
+            specieId: '',
+            specieName: "IN" + moment(new Date()).format('YYYYMMDDHHmmss') + "" + index,
+            unitId: item.unitId,
+            amount: item.amount,
+            totalPrice: 0,//采购成本
+            price: 0,//单价
+          })
+          index++
+        }
+
+      },
+      // 通过采购单导入产品
+      showPurchaseModal() {
+        state.purchaseVisible = true
+      },
+      /**
+       * 显示入库明细
+       */
       getTblTemplate(tblItems) {
         return tblItems.map(v => v.repoName + ' 入库 <span class="category-name">' + v.categoryName + '</span> ' + v.amount + '/' + v.unitName + '【进价：' + v.price + ' / ' + v.unitName + '】').join('<br />')
 
@@ -659,7 +704,7 @@ export default {
             // 刷新表格
             responseData.code === 200 && this.getTableData()
             //显示提示信息
-            showMessage(responseData.code === 200 ? 'success' : 'error', state.isEdit ? responseData.message.message : responseData.message)
+            showMessage(responseData.code === 200 ? 'success' : 'error', responseData.message || responseData.message.message)
             responseData.code === 200 && (state.dialogVisible = false)
           }
           else {
@@ -810,9 +855,16 @@ export default {
     }
   }
 }
-.grn-detail-title {
-  font-size: 25px;
-  color: #409eff;
+.grn-detail-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .grn-detail-title {
+    display: inline-block;
+    margin-right: 15px;
+    font-size: 25px;
+    color: #409eff;
+  }
 }
 
 .form-pre-flex {

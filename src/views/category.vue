@@ -5,7 +5,7 @@
       <el-button type="primary" icon="Plus" @click="handlerAdd()">新增产品系列</el-button>
     </el-form-item>
   </el-form>
-  <el-table :data="tableData" style="width: 100%" row-key="id" border default-expand-all>
+  <el-table :data="tableData" style="width: 100%" v-loading="loadingTbl" row-key="id" border default-expand-all>
     <el-table-column prop="name" label="商品名称" />
     <el-table-column label="操作" width="280">
       <template #default="scope">
@@ -30,7 +30,7 @@
     </el-table-column>
   </el-table>
 
-  <!-- 新增客户 dialog -->
+  <!-- 新增 dialog -->
   <el-dialog v-model="dialogVisible" width="500px" :title="isEdit?'修改产品类别':'新增产品类别'" :before-close="resetDialogForm">
     <el-form size="small" ref="dialogRef" :model="dialogForm" :rules="dialogFormRules" class="demo-form-inline">
       <el-form-item label="所属产品系列：">
@@ -64,6 +64,7 @@ export default {
       isEdit: false,
       saveLoading: false,
       currentEditData: {},//当前修改数据
+      loadingTbl: false
     })
     // 新增、修改form
     const dialogForm = reactive({
@@ -138,8 +139,10 @@ export default {
      * 获取产品分类树
      */
     const handlerGetCategory = async () => {
+      state.loadingTbl = true
       const categorytableData = await getCategoryTree()
-      state.tableData = categorytableData.message
+      categorytableData.code === 200 && (state.tableData = categorytableData.message)
+      state.loadingTbl = false
     }
     //加载产品类别数据
     handlerGetCategory()

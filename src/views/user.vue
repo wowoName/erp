@@ -318,7 +318,8 @@ export default {
       const response = await api.addUser(data.userDialogForm)
       data.saveLoading = false
       if (response.code == 200) {
-        ElMessage.success(response.message);
+        // ElMessage.success(response.message);
+        ElMessage.success("此版本新增用户无任何权限！！！");
         //刷新表格
         methods.onQuery()
         //关闭dialog

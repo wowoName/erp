@@ -8,12 +8,12 @@
         <component :is="collapse?'Expand':'Fold'" />
       </el-icon>
     </div>
-    <div class="logo">erp管理系统</div>
+    <div class="logo">erp管理系统【QQ:1069722589】</div>
     <div class="header-right">
       <div class="header-user-con">
         <!-- 用户头像 -->
         <div class="user-avator">
-          <img src="../assets/img/img.jpg" />
+          <img src="../assets/img/baby.jpg" />
         </div>
         <!-- 用户名下拉菜单 -->
         <el-dropdown class="user-name" trigger="click" @command="handleCommand">
@@ -91,7 +91,7 @@ export default {
 }
 .header .logo {
   float: left;
-  width: 250px;
+  // width: 250px;
   line-height: 70px;
 }
 .header-right {

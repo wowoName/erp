@@ -27,10 +27,10 @@ export const getDataById = (data, id) => {
  * loading
  * @returns 
  */
-export const globalLoading = function () {
+export const globalLoading = function (msg = "加载中") {
     return ElLoading.service({
         lock: true,
-        text: 'Loading',
+        text: msg,
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)',
     })

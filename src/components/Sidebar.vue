@@ -102,6 +102,30 @@ export default {
       },
       {
         icon: "SoldOut",
+        index: "caigou",
+        title: "采购管理",
+        subs: [
+          {
+            icon: "List",
+            index: "/purchaseManage",
+            title: "采购申请",
+          }
+        ],
+      },
+      {
+        icon: "Sell",
+        index: "sell",
+        title: "销售管理",
+        subs: [
+          {
+            icon: "Sell",
+            index: "/salesManage",
+            title: "出库申请",
+          }
+        ],
+      },
+      {
+        icon: "SoldOut",
         index: "7",
         title: "入库管理",
         subs: [
@@ -122,6 +146,7 @@ export default {
           },
         ],
       },
+
       {
         icon: "Sell",
         index: "8",

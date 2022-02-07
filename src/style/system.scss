@@ -1,0 +1,10 @@
+$statusColor: (
+  o: #333333,
+  1: #409eff,
+  2: #ed3011,
+);
+@each $k, $v in $statusColor {
+  .status-#{$k} {
+    color: $v;
+  }
+}

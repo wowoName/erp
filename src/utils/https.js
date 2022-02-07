@@ -33,7 +33,8 @@ httpRequest.interceptors.response.use(response => {
         router.push('/403')
         return Promise.reject(response.data)
     }
-    else if (![200, 203].includes(response.data.code) || response.status !== 200) {
+    // 301 参数缺失
+    else if (![200, 203, 301].includes(response.data.code) || response.status !== 200) {
         ElMessage({
             showClose: true,
             message: '系统错误，请刷新重试',
