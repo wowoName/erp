@@ -38,7 +38,7 @@ export default () => {
     */
     async function getoutboundTotal() {
         const params = {
-            totalType: 'month',
+            totalType: 'year',
             startDate: moment(new Date(+new Date() - 3 * 30 * 24 * 60 * 60 * 1000)).format('YYYY-MM-DD HH:mm:ss'),
             endDate: moment(new Date()).format('YYYY-MM-DD 23:59:59')
         }
