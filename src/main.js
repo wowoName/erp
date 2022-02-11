@@ -13,7 +13,7 @@ import '@/style/element.theme.scss'
 import '@/style/system.scss'
 
 
-//注册全局图标
+//element图标
 import * as ElIcons from '@element-plus/icons'
 
 /**
@@ -21,6 +21,8 @@ import * as ElIcons from '@element-plus/icons'
  */
 const userInfos = sessionStorage.getItem('erp')
 userInfos && (store.state.userInfos = JSON.parse(userInfos));
+
+// 指令
 import vueDirective from '@/directive'
 
 const app = createApp(App)

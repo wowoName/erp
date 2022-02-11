@@ -59,7 +59,4 @@ export default {
 .move-leave-to {
   opacity: 0;
 }
-.content {
-  // background-color: #f0f2f5;
-}
 </style>

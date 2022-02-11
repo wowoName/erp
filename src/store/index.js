@@ -64,13 +64,13 @@ export default createStore({
         background: 'rgba(0, 0, 0, 0.7)',
       })
 
-      return new Promise(async (resolve) => {
+      return new Promise(async resolve => {
         let loginResult = await login(value).finally(() => {
           loadingInstance.close()
         })
         //登录成功保存用户信息
         if (loginResult.code === 200) {
-          //情况用户信息
+          //保存用户信息
           sessionStorage.setItem('erp', JSON.stringify(loginResult.message))
           commit('SET_USE_INFOS', loginResult.message)
           router.push("/");

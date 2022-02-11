@@ -131,11 +131,19 @@ export const getTest = (data = {}) => {
 
 /** 入库*/
 export const addGrnList = (data = {}) => {
-    return httpFetch.post('grn/add', data)
+    return httpFetch.post('grn/add', data, {
+        header: {
+            'Content-Type': 'multipart/form-data'
+        }
+    })
 }
 //更新
 export const updateGrnList = (data = {}) => {
-    return httpFetch.post('grn/updateGrn', data)
+    return httpFetch.post('grn/updateGrn', data, {
+        header: {
+            'Content-Type': 'multipart/form-data'
+        }
+    })
 }
 // 删除 入库单
 export const deleteGrnList = (data = {}) => {
@@ -289,6 +297,13 @@ export const getPurchaseById = (data = {}) => {
 export const addDeliveryNotice = (data = {}) => {
     return httpFetch.post('deliveryNotice/add', data)
 }
+
+
+/** 根据id获取出库通知单单*/
+export const getDeliveryNoticeById = (data = {}) => {
+    return httpFetch.post('deliveryNotice/getOne', data)
+}
+
 
 /** 更新入库通知单*/
 export const updateDeliveryNotice = (data = {}) => {

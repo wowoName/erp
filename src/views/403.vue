@@ -15,12 +15,8 @@
     </div>
   </div>
 </template>
-<script>
-export default {
-  setup() {
-    console.log('%cQQ：1069722589', 'color:red')
-  }
-}
+  <script setup>
+console.log('%cQQ：1069722589', 'color:red')
 </script>
   <style lang="scss" scoped>
 .infos {

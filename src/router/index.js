@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import store from '@/store'
-const routes = [
+export const routes = [
   {
     path: '/',
     name: 'index',
@@ -13,6 +13,7 @@ const routes = [
       name: 'home',
       meta: {
         title: '系统主页',
+        auth: [],
       },
       component: () => import(/* webpackChunkName: "home" */ '../views/home.vue')
     }, {
@@ -20,6 +21,7 @@ const routes = [
       name: 'user',
       meta: {
         title: '用户管理',
+        auth: ['guanli']
       },
       component: () => import(/* webpackChunkName: "user" */ '../views/user.vue')
     }, {
@@ -27,6 +29,7 @@ const routes = [
       name: 'customer',
       meta: {
         title: '客户管理',
+        auth: ['guanli', 'lingshou']
       },
       component: () => import(/* webpackChunkName: "customer" */ '../views/customer.vue')
     }, {
@@ -34,6 +37,7 @@ const routes = [
       name: 'customerAnalysis',
       meta: {
         title: '客户购买行为统计',
+        auth: ['guanli', 'lingshou'],
       },
       component: () => import(/* webpackChunkName: "customer" */ '../views/customerAnalysis.vue')
     }, {
@@ -41,6 +45,7 @@ const routes = [
       name: 'category',
       meta: {
         title: '商品管理',
+        auth: ['guanli', 'caigou'],
       },
       component: () => import(/* webpackChunkName: "category" */ '../views/category.vue')
     }, {
@@ -48,6 +53,7 @@ const routes = [
       name: 'specie',
       meta: {
         title: '批次管理',
+        auth: ['guanli', 'cangku'],
       },
       component: () => import(/* webpackChunkName: "specie" */ '../views/specie.vue')
     }, {
@@ -55,6 +61,7 @@ const routes = [
       name: 'unitManager',
       meta: {
         title: '单位管理',
+        auth: ['guanli'],
       },
       component: () => import(/* webpackChunkName: "uit" */ '../views/unit.vue')
     }, {
@@ -62,6 +69,7 @@ const routes = [
       name: 'repoManager',
       meta: {
         title: '仓库管理',
+        auth: ['guanli', 'cangku'],
       },
       component: () => import(/* webpackChunkName: "repo" */ '../views/repo.vue')
     }, {
@@ -69,6 +77,7 @@ const routes = [
       name: 'supplierManage',
       meta: {
         title: '供应商管理',
+        auth: ['guanli', 'caigou'],
       },
       component: () => import(/* webpackChunkName: "supplier" */ '../views/supplier.vue')
     }, {
@@ -76,6 +85,7 @@ const routes = [
       name: 'grnManage',
       meta: {
         title: '入库管理',
+        auth: ['guanli', 'cangku'],
       },
       component: () => import(/* webpackChunkName: "grnManage" */ '../views/grnManage.vue')
     }, {
@@ -83,6 +93,7 @@ const routes = [
       name: 'grnTotal',
       meta: {
         title: '入库统计',
+        auth: ['guanli', 'cangku'],
       },
       component: () => import(/* webpackChunkName: "grnTotal" */ '../views/grnTotal.vue')
     }, {
@@ -90,6 +101,7 @@ const routes = [
       name: 'grnSumarry',
       meta: {
         title: '入库总汇',
+        auth: ['guanli', 'cangku'],
       },
       component: () => import(/* webpackChunkName: "grnSumarry" */ '../views/grnSumarry.vue')
     }, {
@@ -97,6 +109,7 @@ const routes = [
       name: 'outboundManage',
       meta: {
         title: '出库管理',
+        auth: ['guanli', 'cangku'],
       },
       component: () => import(/* webpackChunkName: "outboundManage" */ '../views/outboundManage.vue')
     }, {
@@ -104,6 +117,7 @@ const routes = [
       name: 'outboundSumarry',
       meta: {
         title: '出库汇总',
+        auth: ['guanli', 'cangku'],
       },
       component: () => import(/* webpackChunkName: "outboundSumarry" */ '../views/outboundSumarry.vue')
     }, {
@@ -111,6 +125,7 @@ const routes = [
       name: 'outboundTotal',
       meta: {
         title: '出库统计',
+        auth: ['guanli', 'cangku'],
       },
       component: () => import(/* webpackChunkName: "outboundTotal" */ '../views/outboundTotal.vue')
     }, {
@@ -118,6 +133,7 @@ const routes = [
       name: 'inventory',
       meta: {
         title: '库存盘点',
+        auth: ['guanli', 'cangku'],
       },
       component: () => import(/* webpackChunkName: "inventory" */ '../views/inventory.vue')
     },
@@ -126,6 +142,7 @@ const routes = [
       name: 'purchaseManage',
       meta: {
         title: '采购申请',
+        auth: ['guanli', 'caigou'],
       },
       component: () => import(/* webpackChunkName: "purchaseManage" */ '../views/purchaseManage.vue')
     },
@@ -134,10 +151,10 @@ const routes = [
       name: 'salesManage',
       meta: {
         title: '出库通知单',
+        auth: ['guanli', 'lingshou'],
       },
       component: () => import(/* webpackChunkName: "purchaseManage" */ '../views/salesManage.vue')
     },
-
     {
       path: '/build',
       name: 'build',
@@ -152,7 +169,7 @@ const routes = [
     path: '/fileUpload',
     name: 'fileUpload',
     meta: {
-      title: '开发中',
+      title: '文件上传测试模块',
     },
     component: () => import(/* webpackChunkName: "build" */ '../views/fileUpload.vue')
   },
@@ -160,9 +177,17 @@ const routes = [
     path: '/print-purchase',
     name: 'print-purchase',
     meta: {
-      title: '打印出库单',
+      title: '打印采购单',
     },
     component: () => import(/* webpackChunkName: "print-purchase" */ '../views/printPurchase.vue')
+  },
+  {
+    path: '/print-sales',
+    name: 'print-sales',
+    meta: {
+      title: '打印出库申请单',
+    },
+    component: () => import(/* webpackChunkName: "print-purchase" */ '../views/printSales.vue')
   },
   {
     path: '/login',
@@ -200,14 +225,27 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   document.title = to.meta.title
   const role = store.state.userInfos
+  const auth = to.meta.auth || []
+  // 权限
+  const hasAuth = currentUserHasAuth(auth)
   if (!role && to.path !== '/login') {
     next('/login');
-  } else if (to.meta.permission) {
+  } else if (!hasAuth) {
     // 如果是管理员权限则可进入，这里只是简单的模拟管理员权限而已
     role === 'admin' ? next() : next('/403');
   } else {
     next();
   }
 });
+
+/**
+ * 当前用户是否拥有权限
+ * @param {*} auth 当前路由权限
+ */
+function currentUserHasAuth(auth) {
+  if (auth.length === 0) return true;
+  const role = store.state.userInfos
+  return auth.some(v => role[v])
+}
 
 export default router

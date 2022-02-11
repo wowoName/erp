@@ -3,27 +3,26 @@
   <div class="print-purchase-con" id="print_area">
     <div class="main">
       <h2 class="title">XXX集团建设有限公司</h2>
-      <h3 class="title">采购单</h3>
+      <h3 class="title">出库申请单</h3>
       <div class="print-header">
         <div class="header-item">
           <span>No：</span>{{printData.code}}
         </div>
         <div class="header-item">
-          <span>采购人：</span>{{printData.purchaseUserName}}
+          <span>申请人：</span>{{printData.applyUserName}}
         </div>
         <div class="header-item">
-          <span>审核人：</span>
-          {{printData.checkUserName}}
+          <span>申请日期：</span>{{printData.applyDate}}
+
         </div>
 
       </div>
       <div class="print-header">
         <div class="header-item">
-          <span>申请日期：</span>{{printData.applyDate}}
+          <span>审核人：</span>
+          {{printData.checkUserName}}
         </div>
-        <div class="header-item">
-
-        </div>
+        <div class="header-item"></div>
         <div class="header-item" style="float:right">
           <span>审核日期：</span>{{printData.auditDate}}
         </div>
@@ -36,8 +35,7 @@
           <td width='160'>采购数量</td>
           <td>单位</td>
           <td>仓库名称</td>
-          <td>单价</td>
-          <td>金额</td>
+
         </tr>
         <tr v-for="(item,index) in printData.children" :key="item.id">
           <td>{{index+1}}</td>
@@ -45,13 +43,8 @@
           <td>{{item.amount}}</td>
           <td>{{item.unitName}}</td>
           <td>{{item.repoName}}</td>
-          <td><span class="price"></span></td>
-          <td><span class="price"></span></td>
         </tr>
-        <tr>
-          <td colspan="4" style="text-align:left;padding-left:10px">合计大写：</td>
-          <td colspan="3" style="text-align:left;padding-left:10px">合计小写：</td>
-        </tr>
+
       </table>
     </div>
   </div>
@@ -66,7 +59,7 @@ import { ElMessage } from "element-plus";
 // 打印
 import print from 'print-js'
 import {
-  getPurchaseById
+  getDeliveryNoticeById
 } from '@/api/common'
 export default {
 
@@ -78,7 +71,7 @@ export default {
     })
     const route = useRoute()
     const id = route.query?.id || '';
-    getPurchaseById({ id: id }).then(data => {
+    getDeliveryNoticeById({ id: id }).then(data => {
       const records = data.message.records
       if (data.code === 200 && records.length > 0) {
 

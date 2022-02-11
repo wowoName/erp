@@ -8,7 +8,7 @@
         <component :is="collapse?'Expand':'Fold'" />
       </el-icon>
     </div>
-    <div class="logo">erp管理系统【-QQ:1069722589】</div>
+    <div class="logo">erp管理系统【QQ:1069722589】</div>
     <div class="header-right">
       <div class="header-user-con">
         <!-- 用户头像 -->
@@ -59,6 +59,7 @@ export default {
     const router = useRouter();
     const handleCommand = async (command) => {
       if (command == "loginout") {
+
         await logout()
         router.push("/login");
       }

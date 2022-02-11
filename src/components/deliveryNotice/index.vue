@@ -1,7 +1,7 @@
 <!--  -->
  <template>
   <el-form :inline="true" :model="queryForm" label-width="100px" size="small" class="demo-form-inline">
-    <el-form-item label="采购单号：">
+    <el-form-item label="申请单号：">
       <el-input v-model="queryForm.code" @keyup.enter.native="getTableData()" clearable placeholder="请输采购单号">
       </el-input>
     </el-form-item>
@@ -18,13 +18,6 @@
 
     <el-form-item label="申请人：">
       <el-select v-model="queryForm.applyId" clearable filterable placeholder="选择申请人">
-        <el-option v-for="item in agentData" :key="item.id" :label="item.name" :value="item.id">
-        </el-option>
-      </el-select>
-    </el-form-item>
-
-    <el-form-item label="采购人：">
-      <el-select v-model="queryForm.purchaseId" clearable filterable placeholder="选择采购人">
         <el-option v-for="item in agentData" :key="item.id" :label="item.name" :value="item.id">
         </el-option>
       </el-select>
@@ -56,8 +49,8 @@
     </el-table-column>
     <el-table-column type="index" width="50" />
 
-    <el-table-column prop="code" label="采购单号" min-width="200" />
-    <el-table-column label="采购产品" min-width="320">
+    <el-table-column prop="code" label="单号" min-width="200" />
+    <el-table-column label="出库产品" min-width="320">
       <template #default="props">
         <span v-html="getTblTemplate(props.row.children)"></span>
       </template>
@@ -66,7 +59,6 @@
     <el-table-column prop="auditDate" label="审核日期" width="160" />
     <el-table-column prop="applyUserName" label="申请人" min-width="120" />
     <el-table-column prop="applyDate" label="申请日期" width="160" />
-    <el-table-column prop="purchaseUserName" label="采购人" min-width="120" />
 
   </el-table>
   <el-pagination v-model:currentPage="currentPage" :page-sizes="[10, 20, 30, 50]" :page-size="pageSize"
@@ -80,7 +72,7 @@
 import { reactive, toRefs } from 'vue'
 import moment from 'moment'
 import {
-  getPurchaseList, getRepoList, getCategoryTree, getUnitList
+  getDeliveryNoticeList, getRepoList, getCategoryTree, getUnitList
 } from '@/api/common'
 import { userList } from '@/api/user'
 
@@ -113,15 +105,12 @@ export default {
       selectedRow(row) {
         emit('selectedPurchase', row)
       },
-
       /**
-   * 显示采购明细
-   */
+       * 显示明细
+       */
       getTblTemplate(tblItems) {
         return tblItems.map(v => v.repoName + ' 采购 <span class="category-name">' + v.categoryName + '</span> ' + v.amount + '/' + v.unitName).join('<br />')
-
       },
-
 
       /**
        * 获取列表
@@ -135,7 +124,7 @@ export default {
         //产品id如果是数组取最后一位
         Array.isArray(params.categoryId) && (params.categoryId = params.categoryId.map(v => v.at(-1)).join(','))
 
-        const res = await getPurchaseList(params)
+        const res = await getDeliveryNoticeList(params)
         res.code === 200 && (state.tableData = res.message.records) && (state.total = res.message.total)
         state.loadTable = false
       },

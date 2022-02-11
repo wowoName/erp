@@ -17,6 +17,14 @@
   <el-table :data="tableData" v-loading="loadingTbl" style="width: 100%" border empty-text="暂无数据">
     <el-table-column prop="name" label="姓名" />
     <el-table-column prop="phone" label="手机号" />
+    <el-table-column prop="phone" label="角色">
+      <template #default="scope">
+        <span v-if="scope.row.guanli">管理员</span>
+        <span v-if="scope.row.caigou">采购员</span>
+        <span v-if="scope.row.lingshou">销售员</span>
+        <span v-if="scope.row.cangku">仓库管理员</span>
+      </template>
+    </el-table-column>
     <el-table-column fixed="right" label="操作" width="220">
       <template #default="scope">
         <el-button icon="Edit" size="mini" v-if="scope.row.name!=='admin'"
@@ -39,7 +47,7 @@
 
   <!-- 新增用户 dialog -->
   <el-dialog v-model="userDailog" width="500px" title="添加用户" :before-close="resetDialogForm">
-    <el-form size="small" ref="userDialogRef" :model="userDialogForm" :rules="userDialogFormRules"
+    <el-form size="small" ref="userDialogRef" :label-width="100" :model="userDialogForm" :rules="userDialogFormRules"
       class="demo-form-inline">
       <el-form-item label="用户姓名：" prop="name">
         <el-input v-model="userDialogForm.name" clearable placeholder="请输入用户姓名"></el-input>
@@ -55,6 +63,14 @@
         <el-input v-model="userDialogForm.password1" autocomplete="off" clearable show-password placeholder="请再次输入密码">
         </el-input>
       </el-form-item>
+      <el-form-item label="角色：" prop="role">
+        <el-radio-group v-model="userDialogForm.role">
+          <el-radio-button label="guanli">管理员</el-radio-button>
+          <el-radio-button label="caigou">采购员</el-radio-button>
+          <el-radio-button label="lingshou">销售员</el-radio-button>
+          <el-radio-button label="cangku">仓库管理员</el-radio-button>
+        </el-radio-group>
+      </el-form-item>
     </el-form>
 
     <template #footer>
@@ -64,7 +80,7 @@
       </span>
     </template>
   </el-dialog>
-
+  <!-- 修改密码 -->
   <el-dialog v-model="editPassDialog" width="500px" title="修改密码">
     <el-form size="small" ref="passDialogRef" :model="passForm" :rules="pwdDialogRules" class="demo-form-inline">
 
@@ -104,7 +120,8 @@ export default {
         name: '',
         phone: '',
         password: '',
-        password1: ''
+        password1: '',
+        role: 'guanli',
       }
     }
     // userDialog ref
@@ -246,8 +263,8 @@ export default {
         })
         let res = await api.deleteUser(userData.id);
         loading.close()
-        ElMessage.info(res.message)
-
+        ElMessage.success(res.message)
+        res.code === 200 && this.onQuery();
       },
       /**
        * 新增用户
@@ -315,11 +332,20 @@ export default {
      */
     const handlerSaveUser = async () => {
       data.saveLoading = true
-      const response = await api.addUser(data.userDialogForm)
+      const params = Object.assign({
+        guanli: false,
+        caigou: false,
+        lingshou: false,
+        cangku: false
+      }, data.userDialogForm);
+
+      // 当前选择的角色
+      const currentRole = params.role;
+      params[currentRole] = true
+      const response = await api.addUser(params)
       data.saveLoading = false
       if (response.code == 200) {
-        // ElMessage.success(response.message);
-        ElMessage.success("此版本新增用户无任何权限！！！");
+        ElMessage.success(response.message);
         //刷新表格
         methods.onQuery()
         //关闭dialog

@@ -13,9 +13,14 @@ const httpRequest = axios.create({
     baseURL: process.env.NODE_ENV === 'production' ? process.env[targets] + "/" : "/" + (proxys.toLowerCase()),//
     headers: {
         // 'Content-Type': 'application/x-www-form-urlencoded',
-        "token": "111"
+        "token": "AZIUYHGDR145LHG"
     },
 });
+// httpRequest.interceptors.request.use(response => {
+//     return response
+// }, error => {
+//     console.log('错误')
+// })
 /**
  * 响应拦截
  */
@@ -25,13 +30,15 @@ httpRequest.interceptors.response.use(response => {
      * 其他为系统错误
      */
     if (response.data.code === 401) {
-        ElMessage({
-            showClose: true,
-            message: '你没有权限',
-            type: 'error',
-        })
-        router.push('/403')
-        return Promise.reject(response.data)
+        // ElMessage({
+        //     showClose: true,
+        //     message: '你没有权限',
+        //     type: 'error',
+        // })
+        // router.push('/403')
+        return response.data//Promise.reject(response.data)
+    } else if (response.data.code === 8888) {
+        router.push('/login')
     }
     // 301 参数缺失
     else if (![200, 203, 301].includes(response.data.code) || response.status !== 200) {
@@ -44,7 +51,7 @@ httpRequest.interceptors.response.use(response => {
     }
     return response.data
 }, error => {
-    console.log('系统错误', error)
+    console.log('系统错误--', error)
     return Promise.reject(error)
 });
 const api = {
