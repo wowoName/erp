@@ -24,7 +24,7 @@
     </el-form-item>
 
     <el-form-item label="分批次统计：" class="radio-button-item">
-      <el-radio-group v-model="formInline.groupByCategory">
+      <el-radio-group v-model="formInline.groupByCategory" @change="onQuery()">
         <el-radio-button label="1">是</el-radio-button>
         <el-radio-button label="0">否</el-radio-button>
       </el-radio-group>

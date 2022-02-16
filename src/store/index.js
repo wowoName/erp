@@ -30,7 +30,11 @@ export default createStore({
       state.tagsList.push(data)
     },
     clearTags(state) {
-      state.tagsList = []
+      state.tagsList = [{
+        title: '系统主页',
+        path: '/',
+        name: 'home'
+      }]
     },
     closeTagsOther(state, data) {
       state.tagsList = data;

@@ -247,14 +247,14 @@ export default {
        */
       handleSizeChange(value) {
         state.pageSize = value
-        this.getSepcieData()
+        methods.getSepcieData()
       },
       /**
        * 分页页数改变
        */
       handleCurrentChange(value) {
         state.currentPage = value
-        this.getSepcieData()
+        methods.getSepcieData()
       }
     }
 
