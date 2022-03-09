@@ -132,7 +132,7 @@ export const getTest = (data = {}) => {
 /** 入库*/
 export const addGrnList = (data = {}) => {
     return httpFetch.post('grn/add', data, {
-        header: {
+        headers: {
             'Content-Type': 'multipart/form-data'
         }
     })
@@ -140,7 +140,7 @@ export const addGrnList = (data = {}) => {
 //更新
 export const updateGrnList = (data = {}) => {
     return httpFetch.post('grn/updateGrn', data, {
-        header: {
+        headers: {
             'Content-Type': 'multipart/form-data'
         }
     })
@@ -328,13 +328,16 @@ export const getDeliveryNoticeList = (data = {}) => {
 /** 上传文件*/
 export const uploadFile = (data = {}) => {
     return httpFetch.post('grn/uploadFile', data, {
-        header: {
+        headers: {
             'Content-Type': 'multipart/form-data'
         }
     })
 }
 
-
+/** 日志*/
+export const getLogoList = (data) => {
+    return httpFetch.post(`logo/list?pageNo=${data.pageNo}&pageSize=${data.pageSize}`, data)
+}
 
 
 

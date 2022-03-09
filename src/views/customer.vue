@@ -18,7 +18,7 @@
     </el-form-item>
   </el-form>
   <!-- 表格 -->
-  <el-table :data="tableData" v-loading="loadingTbl" style="width: 100%" border empty-text="暂无数据">
+  <el-table :data="tableData" v-loading="loadingTbl" v-tableHeight style="width: 100%" border empty-text="暂无数据">
     <el-table-column prop="name" label="姓名" width="100" />
     <el-table-column prop="phone" label="手机号" width="120" />
     <el-table-column prop="address" label="地址" />

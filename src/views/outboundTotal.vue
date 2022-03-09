@@ -29,7 +29,7 @@
 
   </el-form>
   <!-- 表格 -->
-  <el-table :data="tableData" v-loading="loadingTbl" show-summary style="width: 100%" border empty-text="暂无数据">
+  <el-table :data="tableData" v-loading="loadingTbl" v-tableHeight show-summary style="width: 100%" border empty-text="暂无数据">
     <el-table-column prop="repoName" label="仓库名称" />
     <el-table-column prop="categoryName" label="商品名称" />
     <el-table-column prop="amounts" label="总数量">

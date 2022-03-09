@@ -15,7 +15,7 @@
       <!-- <el-button icon="Plus" @click="handlerAdd()">新增批次</el-button> -->
     </el-form-item>
   </el-form>
-  <el-table :data="tableData" v-loading="loadTable" row-key="id" border default-expand-all>
+  <el-table :data="tableData" v-loading="loadTable" v-tableHeight row-key="id" border default-expand-all>
     <el-table-column prop="name" label="批次名称" />
     <el-table-column prop="categoryName" label="所属产品" />
 

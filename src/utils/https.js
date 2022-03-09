@@ -7,13 +7,12 @@ let targets = Object.keys(process.env).filter(v => v.includes('VUE_APP_URL'))[0]
 let proxys = targets.split('_').pop();
 console.log('========ajax============');
 console.log(process.env[targets], proxys)
-
 const httpRequest = axios.create({
     timeout: 10000, // 请求超时时间
     baseURL: process.env.NODE_ENV === 'production' ? process.env[targets] + "/" : "/" + (proxys.toLowerCase()),//
     headers: {
         // 'Content-Type': 'application/x-www-form-urlencoded',
-        "token": "AZIUYHGDR145LHG"
+        "token": "AZIUYHGDR145LHG",
     },
 });
 // httpRequest.interceptors.request.use(response => {
@@ -55,8 +54,8 @@ httpRequest.interceptors.response.use(response => {
     return Promise.reject(error)
 });
 const api = {
-    get(url, data) {
-        return httpRequest.get(url, { params: data })
+    get(url, data, config) {
+        return httpRequest.get(url, { params: data }, config)
     },
     post(url, data, config) {
         return httpRequest.post(url, data, config)

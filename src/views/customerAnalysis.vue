@@ -26,7 +26,7 @@
 
   </el-form>
 
-  <el-table :data="allRakingData" v-loading="loadingTbl" style="width: 100%" border empty-text="暂无数据">
+  <el-table :data="allRakingData" v-loading="loadingTbl" v-tableHeight style="width: 100%" border empty-text="暂无数据">
     <el-table-column prop="userName" label="姓名" />
     <el-table-column prop="allPrice" label="总金额" sortable />
     <el-table-column prop="allRealCo" label="总支付" sortable />

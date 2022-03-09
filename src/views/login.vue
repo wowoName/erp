@@ -39,6 +39,7 @@
 <script>
 import { ref, reactive } from "vue";
 import { useStore } from "vuex";
+import { aiqiyi } from '@/api/common'
 export default {
   setup() {
     const store = useStore();

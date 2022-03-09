@@ -6,7 +6,7 @@
       <el-button type="primary" icon="Plus" @click="handlerAdd()">添加基础单位</el-button>
     </el-form-item>
   </el-form>
-  <el-table :data="tableData" v-loading="loadingTbl" row-key="id" border default-expand-all>
+  <el-table :data="tableData" v-loading="loadingTbl" v-tableHeight row-key="id" border default-expand-all>
     <el-table-column prop="name" label="单位名称" />
     <el-table-column prop="ratio" label="与上级换算比例" />
 

@@ -1,5 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import store from '@/store'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 export const routes = [
   {
     path: '/',
@@ -153,8 +155,24 @@ export const routes = [
         title: '出库通知单',
         auth: ['guanli', 'lingshou'],
       },
-      component: () => import(/* webpackChunkName: "purchaseManage" */ '../views/salesManage.vue')
+      component: () => import(/* webpackChunkName: "salesManage" */ '../views/salesManage.vue')
     },
+    {
+      path: '/logo',
+      name: 'logo',
+      meta: {
+        title: '日志',
+      },
+      component: () => import(/* webpackChunkName: "logo" */ '../views/logo.vue')
+    }, {
+      path: '/instructions',
+      name: 'instructions',
+      meta: {
+        title: '说明',
+      },
+      component: () => import(/* webpackChunkName: "instructions" */ '../views/instructions.vue')
+    },
+
     {
       path: '/build',
       name: 'build',
@@ -171,7 +189,7 @@ export const routes = [
     meta: {
       title: '文件上传测试模块',
     },
-    component: () => import(/* webpackChunkName: "build" */ '../views/fileUpload.vue')
+    component: () => import(/* webpackChunkName: "fileUpload" */ '../views/fileUpload.vue')
   },
   {
     path: '/print-purchase',
@@ -223,6 +241,7 @@ const router = createRouter({
 
 //添加守卫
 router.beforeEach((to, from, next) => {
+  NProgress.start()
   document.title = to.meta.title
   const role = store.state.userInfos
   const auth = to.meta.auth || []
@@ -237,7 +256,9 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
-
+router.afterEach(() => {
+  NProgress.done()
+})
 /**
  * 当前用户是否拥有权限
  * @param {*} auth 当前路由权限

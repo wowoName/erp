@@ -161,7 +161,7 @@ export default {
           if (data.code === 200) {
             const rankingData = data.message;
             state.outboundRakingData = {
-              title: '近一年各商品销售排名',
+              title: '各商品销售排名',
               xAxisData: rankingData.map(v => v.categoryName),
               data: [{
                 name: '商品销售排名',
@@ -173,7 +173,7 @@ export default {
           state.loadingOutboundRaking = false
         });
       },
-      // 近一年商品销售分布离散图
+      // 商品销售分布折线图
       getCategorySalesData() {
         state.loadingScatterData = true
         const params = Object.assign({}, toRaw(state.scatterFrom))

@@ -1,16 +1,109 @@
 //代理路径
 const proxy = require('./build/proxy.js').proxyObj;
 const TerserPlugin = require('terser-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 //打包分析工具
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const IS_PROD = process.env.NODE_ENV === 'production'
 module.exports = {
     publicPath: './',
     productionSourceMap: false,
+    // 修改icon
+    pwa: {
+        iconPaths: {
+            faviconSVG: 'img/icons/momo.svg',
+            favicon32: 'img/icons/momo.svg',
+            favicon16: 'img/icons/momo.svg',
+            appleTouchIcon: 'img/icons/momo.svg',
+            maskIcon: 'img/icons/momo.svg',
+            msTileImage: 'img/icons/momo.svg'
+        }
+    },
     configureWebpack(config) {
 
         if (IS_PROD) {
             config.optimization.minimizer[0].options.terserOptions.compress.drop_console = true
+
+            config.optimization.splitChunks = {
+                cacheGroups: {
+                    common: {
+                        name: 'chunk-common',
+                        chunks: 'initial',
+                        minChunks: 2,
+                        maxInitialRequests: 5,
+                        minSize: 0,
+                        priority: 4,
+                        reuseExistingChunk: true,
+                        enforce: true,
+                    },
+                    vendors: {
+                        name: 'chunk-vendors',
+                        test: /[\\/]node_modules[\\/]/,
+                        chunks: 'initial',
+                        priority: 4,
+                        reuseExistingChunk: true,
+                        enforce: true,
+                    },
+                    elementPlus: {
+                        name: 'chunk-element-plus',
+                        test: /[\\/]node_modules[\\/]element-plus[\\/]/,
+                        chunks: 'all',
+                        priority: 3,
+                        reuseExistingChunk: true,
+                        enforce: true,
+                    },
+                    vueRouter: {
+                        name: 'vue-router',
+                        test: /[\\/]node_modules[\\/]vue-router[\\/]/,
+                        chunks: 'all',
+                        priority: 3,
+                        reuseExistingChunk: true,
+                        enforce: true,
+                    },
+                    vue: {
+                        name: 'vue',
+                        test: /[\\/]node_modules[\\/]vue[\\/]/,
+                        chunks: 'all',
+                        priority: 3,
+                        reuseExistingChunk: true,
+                        enforce: true,
+                    },
+                    vuex: {
+                        name: 'vuex',
+                        test: /[\\/]node_modules[\\/]vuex[\\/]/,
+                        chunks: 'all',
+                        priority: 3,
+                        reuseExistingChunk: true,
+                        enforce: true,
+                    },
+                    echarts: {
+                        name: 'vuex',
+                        test: /[\\/]node_modules[\\/]vuex[\\/]/,
+                        chunks: 'all',
+                        priority: 2,
+                        reuseExistingChunk: true,
+                        enforce: true,
+                    },
+                    mathjs: {
+                        name: 'vuex',
+                        test: /[\\/]node_modules[\\/]vuex[\\/]/,
+                        chunks: 'all',
+                        priority: 2,
+                        reuseExistingChunk: true,
+                        enforce: true,
+                    },
+                    nprogress: {
+                        name: 'vuex',
+                        test: /[\\/]node_modules[\\/]vuex[\\/]/,
+                        chunks: 'all',
+                        priority: 2,
+                        reuseExistingChunk: true,
+                        enforce: true,
+                    },
+
+                },
+            }
+
         }
         /**
          * element-plus 报错处理
@@ -20,6 +113,12 @@ module.exports = {
             include: /node_modules/,
             type: "javascript/auto"
         })
+        config.plugins.forEach(val => {
+            if (val instanceof HtmlWebpackPlugin) {
+                val.options.title = '二牛进销存'
+            }
+        })
+
         return require('./build/aliasNames')
     },
     chainWebpack(config) {

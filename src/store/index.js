@@ -12,7 +12,9 @@ export default createStore({
       name: 'home'
     }],
     collapse: false,
-    userInfos: null
+    userInfos: {
+      name: ''
+    }
   },
   mutations: {
     /**
@@ -78,10 +80,12 @@ export default createStore({
           sessionStorage.setItem('erp', JSON.stringify(loginResult.message))
           commit('SET_USE_INFOS', loginResult.message)
           router.push("/");
+          resolve(loginResult)
         } else {
           ElMessage.error(loginResult.message)
+          resolve(loginResult)
         }
-        resolve(loginResult)
+
       })
     }
   },

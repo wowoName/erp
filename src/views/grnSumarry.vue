@@ -24,7 +24,8 @@
 
   </el-form>
   <!-- 表格 -->
-  <el-table :data="tableData" v-loading="loadingTbl" show-summary style="width: 100%" border empty-text="暂无数据">
+  <el-table :data="tableData" v-loading="loadingTbl" v-tableHeight show-summary style="width: 100%" border
+    empty-text="暂无数据">
     <el-table-column prop="date" label="日期" />
     <el-table-column prop="allPrice" label="总金额" />
     <el-table-column prop="allRealCo" label="已付款金额" />

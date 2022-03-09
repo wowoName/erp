@@ -11,7 +11,7 @@
       <el-button icon="Plus" @click="handlerAdd()">新增供应商</el-button>
     </el-form-item>
   </el-form>
-  <el-table :data="tableData" v-loading="loadTable" row-key="id" border default-expand-all>
+  <el-table :data="tableData" v-loading="loadTable" v-tableHeight row-key="id" border default-expand-all>
     <el-table-column prop="name" label="供应商名称" />
     <el-table-column prop="contact" label="联系人" width="110" />
     <el-table-column prop="phone" label="电话" width="110" />

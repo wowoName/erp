@@ -5,7 +5,8 @@
       <el-button type="primary" icon="Plus" @click="handlerAdd()">新增产品系列</el-button>
     </el-form-item>
   </el-form>
-  <el-table :data="tableData" style="width: 100%" v-loading="loadingTbl" row-key="id" border default-expand-all>
+  <el-table :data="tableData" style="width: 100%" v-tableHeight v-loading="loadingTbl" row-key="id" border
+    default-expand-all>
     <el-table-column prop="name" label="商品名称" />
     <el-table-column label="操作" width="280">
       <template #default="scope">
@@ -37,7 +38,7 @@
         <span>{{currentEditData.pname}}</span>
       </el-form-item>
       <el-form-item label="产品名称：" prop="name">
-        <el-input v-model="dialogForm.name" clearable placeholder="请输入产品名称"></el-input>
+        <el-input v-model.trim="dialogForm.name" clearable placeholder="请输入产品名称"></el-input>
       </el-form-item>
     </el-form>
 
@@ -110,22 +111,30 @@ export default {
         res.code === 200 && handlerGetCategory()
       },
       //保存
-      async handlerSava() {
-        const params = {
-          name: dialogForm.name,
-          pid: state.currentEditData?.pid ?? null
-        }
-        //修改参数添加id
-        state.isEdit && (params.id = state.currentEditData.id)
-        !state.isEdit && (params.pid = state.currentEditData.id)
-        state.saveLoading = true
-        const responseData = state.isEdit ? await updateCategory(params) : await addCategory(params);
-        state.saveLoading = false
-        // 刷新表格
-        responseData.code === 200 && handlerGetCategory()
-        //显示提示信息
-        showMessage(responseData.code === 200 ? 'success' : 'error', responseData.message)
-        responseData.code === 200 && (state.dialogVisible = false)
+      handlerSava() {
+        dialogRef.value.validate(async (valid) => {
+          if (valid) {
+            const params = {
+              name: dialogForm.name,
+              pid: state.currentEditData?.pid ?? null
+            }
+            //修改参数添加id
+            state.isEdit && (params.id = state.currentEditData.id)
+            !state.isEdit && (params.pid = state.currentEditData.id)
+            state.saveLoading = true
+            const responseData = state.isEdit ? await updateCategory(params) : await addCategory(params);
+            state.saveLoading = false
+            // 刷新表格
+            responseData.code === 200 && handlerGetCategory()
+            //显示提示信息
+            showMessage(responseData.code === 200 ? 'success' : 'error', responseData.message)
+            responseData.code === 200 && (state.dialogVisible = false)
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        });
+
       },
       /**
        * 关闭dialog 之前 重置form

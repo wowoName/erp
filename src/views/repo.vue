@@ -12,7 +12,7 @@
       <el-button icon="Plus" @click="handlerAdd()">新增仓库</el-button>
     </el-form-item>
   </el-form>
-  <el-table :data="tableData" v-loading="loadTable" row-key="id" border default-expand-all>
+  <el-table :data="tableData" v-loading="loadTable" v-tableHeight row-key="id" border default-expand-all>
     <el-table-column prop="name" label="仓库名称" />
     <el-table-column prop="address" label="仓库地址" />
     <el-table-column label="操作" width="200">

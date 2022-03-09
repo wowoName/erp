@@ -48,10 +48,11 @@ let menu = [
         index: "/repoManager",
         title: "仓库管理"
     },
+
     {
         icon: "Van",
         index: "/supplierManage",
-        title: "供应商管理"
+        title: "供应商管理",
     },
     {
         icon: "SoldOut",
@@ -123,12 +124,22 @@ let menu = [
         index: "/inventory",
         title: "库存盘点"
     },
+    {
+        icon: "DataAnalysis",
+        index: "/logo",
+        title: "登录日志"
+    },
+    {
+        icon: "IceTea",
+        index: "/instructions",
+        title: "使用说明"
+    }
+
 ];
 export default () => {
     const store = useStore()
     // 获取当前用户
     const userInfos = store.state.userInfos;
-    console.log(routes, '----')
     // 权限路由
     const authRoutes = routes[0].children;
 
@@ -140,7 +151,7 @@ export default () => {
                 // 查找路由
                 const menuRouters = authRoutes.find(ritem => ritem.path === menuPath)
                 if (menuRouters) {
-                    const routerAuth = menuRouters.meta.auth
+                    const routerAuth = menuRouters.meta.auth || []
                     const hasAuth = routerAuth.length > 0 ? routerAuth.some(vv => userInfos[vv]) : true;
                     v.visible = hasAuth
                 } else if (Reflect.has(v, 'subs')) {

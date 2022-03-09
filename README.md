@@ -18,6 +18,12 @@ npm run serve
 npm run build
 ```
 
+## 后端技术栈
+
+```
+spring boot mybatis  shiro  mysql
+```
+
 ### 体验地址
 
 [体验地址](http://101.200.188.171:8888/#/login)

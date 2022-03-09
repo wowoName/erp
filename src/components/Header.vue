@@ -8,7 +8,7 @@
         <component :is="collapse?'Expand':'Fold'" />
       </el-icon>
     </div>
-    <div class="logo">erp管理系统【QQ:1069722589】</div>
+    <div class="logo">进销存管理系统</div>
     <div class="header-right">
       <div class="header-user-con">
         <!-- 用户头像 -->
@@ -21,6 +21,7 @@
             {{userName}}
             <i class="el-icon-caret-bottom"></i>
           </span>
+
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item divided command="loginout">退出登录</el-dropdown-item>
@@ -29,17 +30,37 @@
         </el-dropdown>
       </div>
     </div>
+    <el-icon color="#ffffff" class="header-setting" @click="drawer=true">
+      <setting />
+    </el-icon>
+
+    <!-- 主题色 -->
+    <el-drawer v-model="drawer" title="设置">
+      <el-form :label-width="130">
+        <el-form-item label="导航栏背景色：">
+          <el-color-picker v-model="defaultThemeColor" @change="changeThemeStyle" />
+        </el-form-item>
+        <el-form-item label="导航栏字体颜色：">
+          <el-color-picker v-model="defaultThemeFontColor" @change="changeThemeFontStyle" />
+        </el-form-item>
+      </el-form>
+    </el-drawer>
   </div>
+
 </template>
 <script>
-import { computed, onMounted } from "vue";
+import { computed, onMounted, reactive, toRefs } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { logout } from '@/api/login'
+import { colorRgb } from '@/utils'
 export default {
   setup() {
-    const message = 2;
-
+    const data = reactive({
+      drawer: false,
+      defaultThemeColor: '#242f42',
+      defaultThemeFontColor: '#bfcbd9'
+    })
     const store = useStore();
     console.log(store.state.userInfos)
     const collapse = computed(() => store.state.collapse);
@@ -64,13 +85,35 @@ export default {
         router.push("/login");
       }
     };
+    /**
+     * 主题色 color Picker
+     */
+    const changeThemeStyle = color => {
+      let root = document.querySelector(":root");
+      const opacityColor = colorRgb(color, 0.8)
+      const activeMenuItem = colorRgb(color, 0.3)
+      root.style.setProperty("--sliderColor", color);
+      root.style.setProperty("--activeMenuItem", activeMenuItem);
+      root.style.setProperty("--themeColor", opacityColor);
+    }
+    /**
+     * 主题色 字体
+     */
+    const changeThemeFontStyle = color => {
+      let root = document.querySelector(":root");
+      root.style.setProperty("--sliderFont", color);
+      root.style.setProperty("--el-menu-text-color", color);
+    }
+
 
     return {
+      ...toRefs(data),
       userName,
-      message,
       collapse,
       collapseChage,
       handleCommand,
+      changeThemeStyle,
+      changeThemeFontStyle
     };
   },
 };
@@ -83,6 +126,13 @@ export default {
   height: 70px;
   font-size: 22px;
   color: #fff;
+}
+.header-setting {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
 }
 .collapse-btn {
   float: left;

@@ -13,14 +13,12 @@
     <div class="route-tag-con">
       <el-tabs v-model="editableTabsValue" class="header-tabs" @tab-remove="closeTags">
         <el-tab-pane v-for="item in tagsList" :closable="item.name!=='home'" :key="item.title"
-          :class="{'item-home':item.name==='home'}" :label="item.title" :name="item.name">
+          :class="{'item-home':item.name==='home'}" :label="item.title" :name="item.name" :path="item.path">
           <template #label>
             <router-link :to="item.path" class="tags-li-title">{{item.title}}</router-link>
-
             <el-icon v-if="item.name=='home'" style="vertical-align: middle;">
               <coffee-cup />
             </el-icon>
-
           </template>
         </el-tab-pane>
       </el-tabs>
@@ -63,6 +61,10 @@ export default {
     const showTags = computed(() => tagsList.value.length > 0);
     console.log(tagsList, "===============")
 
+    const clickTabChangePath = path => {
+      debugger
+      router.push(path);
+    }
     /**
      * 关闭单个标签 
      */
@@ -133,6 +135,7 @@ export default {
       tagsList,
       showTags,
       closeTags,
+      clickTabChangePath,
       handleTags,
       editableTabsValue
     };

@@ -2,9 +2,54 @@ $statusColor: (
   o: #333333,
   1: #409eff,
   2: #ed3011,
+  3: #67c23a,
 );
 @each $k, $v in $statusColor {
   .status-#{$k} {
     color: $v;
   }
+}
+
+:root {
+  --themeColor: #242f42;
+  // 左侧导航栏 二级菜单
+  --sliderColor: #242f42;
+  // 左侧导航栏hover
+  --sliderMenuHover: rgb(40, 52, 70);
+  --sliderFont: #bfcbd9;
+  --activeMenuItem: #242f42;
+}
+.collapse-btn {
+  &:hover {
+    background: var(--themeColor) !important;
+  }
+}
+.header {
+  background-color: var(--themeColor);
+}
+.el-menu {
+  background-color: rgba(0, 0, 0, 0);
+  .el-menu {
+    background-color: var(--sliderColor) !important;
+    box-shadow: inset 0px 0px 7px var(--themeColor);
+  }
+}
+.el-sub-menu__title {
+  &:hover {
+    background-color: var(--themeColor) !important;
+  }
+}
+.el-menu-item:hover {
+  background-color: var(--themeColor) !important;
+}
+.el-menu-item,
+.el-sub-menu__title {
+  color: var(--sliderFont) !important;
+}
+.el-menu-item.is-active {
+  color: #fff !important;
+  background: var(--activeMenuItem);
+}
+.sidebar {
+  background-color: var(--themeColor) !important;
 }
