@@ -3,7 +3,7 @@ import { login } from '@/api/login'
 import router from '@/router'
 import { ElMessage, ElLoading } from "element-plus";
 
-
+import { showMessage } from '@/utils'
 export default createStore({
   state: {
     tagsList: [{
@@ -12,9 +12,7 @@ export default createStore({
       name: 'home'
     }],
     collapse: false,
-    userInfos: {
-      name: ''
-    }
+    userInfos: null
   },
   mutations: {
     /**
@@ -76,6 +74,7 @@ export default createStore({
         })
         //登录成功保存用户信息
         if (loginResult.code === 200) {
+          showMessage('success', '带宽较低。转一下就进去了。嘤嘤嘤')
           //保存用户信息
           sessionStorage.setItem('erp', JSON.stringify(loginResult.message))
           commit('SET_USE_INFOS', loginResult.message)
@@ -87,6 +86,12 @@ export default createStore({
         }
 
       })
+    }
+  },
+  getters: {
+    // 个人信息
+    userInfos: state => {
+      return state.userInfos
     }
   },
   modules: {}

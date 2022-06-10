@@ -2,7 +2,13 @@
   <div class="login-wrap">
     <div class="ms-login">
       <div class="ms-title">进销存管理系统</div>
-      <el-form :model="param" :rules="rules" ref="login" label-width="0px" class="ms-content">
+      <el-form
+        :model="param"
+        :rules="rules"
+        ref="login"
+        label-width="0px"
+        class="ms-content"
+      >
         <el-form-item prop="username">
           <el-input v-model="param.username" placeholder="请输入用户名">
             <template #prepend>
@@ -13,8 +19,13 @@
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input type="password" placeholder="请输入密码" show-password v-model="param.password"
-            @keyup.enter="submitForm()">
+          <el-input
+            type="password"
+            placeholder="请输入密码"
+            show-password
+            v-model="param.password"
+            @keyup.enter="submitForm()"
+          >
             <template #prepend>
               <el-icon>
                 <lock />
@@ -22,34 +33,77 @@
             </template>
           </el-input>
         </el-form-item>
+        <el-form-item prop="identify">
+          <div class="identify-main">
+            <div class="identify-main-input">
+              <el-input
+                @keyup.enter.native="submitForm()"
+                class="area"
+                type="text"
+                placeholder="请输验证码"
+                clearable
+                v-model="param.identifyCode"
+              ></el-input>
+            </div>
+            <indentify ref="identifyCodeRef" />
+          </div>
+        </el-form-item>
         <div class="login-btn">
-          <el-button type="primary" :loading="loginLoadign" @click="submitForm()">登录</el-button>
+          <el-button
+            type="primary"
+            :loading="loginLoadign"
+            @click="submitForm()"
+            >登录</el-button
+          >
         </div>
         <el-form-item>
-          <span style="color:#ffffff;font-size:20px">请使用最新google浏览器体验!!!</span>
+          <span style="color: #ffffff; font-size: 20px"
+            >请使用最新google浏览器体验!!!</span
+          >
         </el-form-item>
       </el-form>
     </div>
   </div>
-  <video poster="@/assets/video-cover.jpeg" loop autoplay muted class="login-video">
-    <source src="@/assets/night.mp4">
+  <video
+    poster="@/assets/video-cover.jpeg"
+    loop
+    autoplay
+    muted
+    class="login-video"
+  >
+    <source src="@/assets/night.mp4" />
   </video>
 </template>
 
 <script>
 import { ref, reactive } from "vue";
 import { useStore } from "vuex";
-import { aiqiyi } from '@/api/common'
+import indentify from "@temp/indentify";
 export default {
+  components: {
+    indentify
+  },
   setup() {
     const store = useStore();
     const param = reactive({
       username: "admin",
       password: "admin!@#$",
+      identifyCode: "",
       // username: "",
       // password: "",
     });
-
+    const identifyCodeRef = ref()
+    //验证图形码
+    function validateSku(rule, value, callback) {
+      let identifyCode = identifyCodeRef.value.identifyCode;
+      if (value == "") {
+        callback(new Error("请填写验证码"));
+      } else if (identifyCode !== param.identifyCode) {
+        callback(new Error("验证码错误"));
+      } else {
+        callback();
+      }
+    }
     const rules = {
       username: [
         {
@@ -61,6 +115,13 @@ export default {
       password: [
         { required: true, message: "请输入密码", trigger: "blur" },
       ],
+      identify: [
+        {
+          validator: (rule, value, callback) => {
+            validateSku(rule, value, callback);
+          }
+        }
+      ]
     };
     const login = ref(null);
     //登录loading
@@ -88,13 +149,23 @@ export default {
       rules,
       login,
       submitForm,
-      loginLoadign
+      loginLoadign,
+      identifyCodeRef
     };
   },
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.identify-main {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .identify-main-input {
+    flex: 1;
+  }
+}
 .login-wrap {
   position: relative;
   width: 100%;
@@ -117,7 +188,7 @@ export default {
   width: 350px;
   margin: -190px 0 0 -175px;
   border-radius: 5px;
-  background: rgb(64, 158, 255, 0.5);
+  background: rgba(64, 158, 255, 0.5);
   overflow: hidden;
 }
 .ms-content {

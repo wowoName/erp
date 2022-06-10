@@ -27,6 +27,14 @@ export const routes = [
       },
       component: () => import(/* webpackChunkName: "user" */ '../views/user.vue')
     }, {
+      path: '/performance',
+      name: 'performance',
+      meta: {
+        title: '业绩考核',
+        auth: ['guanli']
+      },
+      component: () => import(/* webpackChunkName: "performance" */ '../views/performance.vue')
+    }, {
       path: '/customer',
       name: 'customer',
       meta: {

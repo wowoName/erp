@@ -21,7 +21,7 @@ import vueDirective from '@/directive'
 import tableHeight from '@/directive/tableAutoHeight/tableHeight'
 
 // 禁止打开控制台
-import '@/utils/console.js'
+// import '@/utils/console.js'
 /**
  * 加载用户信息
  */
