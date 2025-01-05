@@ -81,7 +81,7 @@ import { useStore } from "vuex";
 import indentify from "@temp/indentify";
 export default {
   components: {
-    indentify
+    indentify,
   },
   setup() {
     const store = useStore();

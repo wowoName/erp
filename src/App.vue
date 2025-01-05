@@ -2,6 +2,7 @@
   <router-view />
 </template>
  <script setup>
+
  </script>
 <style lang="scss">
 #app {
@@ -13,7 +14,6 @@
 
 #nav {
   padding: 30px;
-
   a {
     font-weight: bold;
     color: #2c3e50;
